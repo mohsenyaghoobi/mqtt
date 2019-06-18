@@ -1,4 +1,4 @@
-from Grammars import US_PHONE_GRAMMAR, extend_grammar, opts
+
 from subprocess import Popen, PIPE
 import time
 import paho.mqtt.client as paho
@@ -18,33 +18,19 @@ class mqtt_entry():
     s= "asdfghjkl0"
 
 radamsa_bin = "radamsa\\"
-stdin = -1
-stdout = -1
-
-
 
 # Radamsa
-'''
 def mutate(payload):
     try:
         radamsa = [radamsa_bin, '-n', '1', '-']
-        p = Popen(radamsa, stdin=-1, stdout=-2)
+        p = Popen(radamsa, stdin=PIPE, stdout=PIPE)
         mutated_data = p.communicate(payload)[0]
     except:
         print "Could not execute 'radamsa'."
-        #sys.exit(1)
+        sys.exit(1)
 
-    return mutated_data '''
+    return mutated_data
 
-from Grammars import US_PHONE_GRAMMAR, extend_grammar, opts
-def pick_area_code():
-    return random.choice(['555', '554', '553'])
-PICKED_US_PHONE_GRAMMAR = extend_grammar(US_PHONE_GRAMMAR,
-{
-    "<area>": [("<lead-digit><digit><digit>", opts(pre=pick_area_code))]
-})
-
-pick_area_code()
 broker="127.0.0.1"
 #broker="iot.eclipse.org"
 #define callback
@@ -60,10 +46,10 @@ print("connecting to broker ",broker)
 client.connect(broker)#connect
 client.loop_start() #start loop to process received messages
 print("subscribing ")
-client.subscribe("karim")#subscribe
+client.subscribe("test")#subscribe
 time.sleep(2)
 print("publishing ")
-client.publish("karim",)#publish
+client.publish("test","I want to give radamsa generared fuzz here!!")#publish
 time.sleep(4)
 client.disconnect() #disconnect
 client.loop_stop() #stop loop
